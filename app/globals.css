@@ -1,26 +1,101 @@
+/* app/globals.css */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-offwhite: #f3ede1; /* beige panels */
+  --color-ink: #2f3329; /* dark text colour */
+  --color-charcoal: #4a5044;
+  --color-muted: #6f7465;
+  --color-line: #ddd5c3;
+  --color-placeholder: #e8e0d0;
+  --color-beige: #d9ccb0;
+  --color-sage: #9caf88; /* true sage green */
+  --color-sage-dark: #74886a; /* sage for badges and hover */
+  --color-sage-light: #e4eadb; /* soft sage background */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Buttons, announcement bar and badges that used the dark colour now use true sage. */
+.bg-ink {
+  background-color: #74886a;
+}
+.hover\:bg-charcoal:hover {
+  background-color: #63765a;
+}
+.hover\:bg-sage-dark:hover {
+  background-color: #63765a;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #faf6ee;
+  color: #2f3329;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: #cfd9c0;
+  color: #2f3329;
+}
+
+.container-page {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+@media (min-width: 768px) {
+  .container-page {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid #ddd5c3;
+  background: #fffdf8;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  border-radius: 0;
+}
+.field-input:focus {
+  border-color: #74886a;
+}
+.field-input[aria-invalid="true"] {
+  border-color: #8a3b3b;
 }
