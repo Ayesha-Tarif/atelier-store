@@ -17,6 +17,7 @@ import type { CheckoutDetails, Order } from "@/types/product";
 import { useCart } from "@/context/CartContext";
 import { formatPrice, generateOrderNumber } from "@/lib/utils";
 import { saveLastOrder } from "@/lib/orderStorage";
+import { supabase } from "@/lib/supabase";
 import OrderSummary from "./OrderSummary";
 
 type FormErrors = Partial<Record<keyof CheckoutDetails, string>>;
@@ -113,6 +114,7 @@ export default function CheckoutForm() {
   const [values, setValues] = useState<CheckoutDetails>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [placed, setPlaced] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   // Update a field while typing. If it already had an error, re-check it.
   function handleChange(
@@ -134,7 +136,7 @@ export default function CheckoutForm() {
     setErrors((prev) => ({ ...prev, [name]: validate(values)[name] }));
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const found = validate(values);
@@ -159,6 +161,29 @@ export default function CheckoutForm() {
       paymentMethod: "Cash on Delivery",
       createdAt: new Date().toLocaleString("en-GB"),
     };
+
+    // Save the order in the Supabase database.
+    const { error } = await supabase.from("orders").insert({
+      order_number: order.orderNumber,
+      customer_name: order.customer.fullName,
+      phone: order.customer.phone,
+      email: order.customer.email,
+      city: order.customer.city,
+      address: order.customer.address,
+      notes: order.customer.notes || null,
+      items: order.items,
+      subtotal: order.subtotal,
+      delivery: order.delivery,
+      total: order.total,
+      payment_method: order.paymentMethod,
+    });
+
+    if (error) {
+      // If saving to the database fails, tell the person instead of
+      // silently moving on, so the order isn't lost without them knowing.
+      setSubmitError("Something went wrong placing your order. Please try again.");
+      return;
+    }
 
     saveLastOrder(order);
     setPlaced(true);
@@ -306,6 +331,10 @@ export default function CheckoutForm() {
             </div>
           </div>
         </div>
+
+        {submitError && (
+          <p className="text-xs text-[#8a3b3b]">{submitError}</p>
+        )}
 
         {hasErrors && (
           <p className="text-xs text-[#8a3b3b]">
