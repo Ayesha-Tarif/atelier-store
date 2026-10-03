@@ -39,8 +39,7 @@ export default function ProductDetails({ product }: { product: Product }) {
   return (
     <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
       {/* Product photo */}
-      <PlaceholderImage className="aspect-[4/5]" src={`/images/products/${product.slug}.jpg`} label={product.name} />
-
+            <PlaceholderImage className="aspect-[4/5]" src={product.imageUrl ?? `/images/products/${product.slug}.jpg`} label={product.name} />
       {/* Information */}
       <div className="lg:sticky lg:top-28 lg:self-start">
         <div className="flex gap-2">

@@ -17,6 +17,7 @@ function mapRow(row: any): Product {
     description: row.description,
     isNew: row.is_new,
     isSale: row.is_sale,
+    imageUrl: row.image_url ?? null,
   };
 }
 

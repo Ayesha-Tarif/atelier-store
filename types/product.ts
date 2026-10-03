@@ -24,6 +24,7 @@ export interface Product {
   description: string; // longer text shown on the product page
   isNew: boolean; // true = appears in "New In" / "New Arrivals"
   isSale: boolean; // true = appears in "Sale"
+  imageUrl: string | null; // address of the uploaded photo (empty for old products)
 }
 
 // One line inside the shopping cart.

@@ -11,9 +11,8 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/product/${product.slug}`} className="group block">
       <div className="relative overflow-hidden">
         <div className="transition-transform duration-700 ease-out group-hover:scale-105">
-          <PlaceholderImage src={`/images/products/${product.slug}.jpg`} label={product.name} />
-        </div>
-
+                    <PlaceholderImage src={product.imageUrl ?? `/images/products/${product.slug}.jpg`} label={product.name} />
+</div>
         {(product.isNew || product.isSale) && (
           <div className="absolute left-3 top-3 flex gap-2">
             {product.isNew && (

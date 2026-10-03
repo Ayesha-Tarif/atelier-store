@@ -1,6 +1,7 @@
 // app/layout.tsx
 // The "shell" around every page: font, announcement bar, navbar,
 // cart drawer, footer, and the cart provider.
+// Admin pages (/admin) hide the navbar and footer (see SiteShell).
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -11,6 +12,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import Navbar from "@/components/Navbar";
 import CartDrawer from "@/components/CartDrawer";
 import Footer from "@/components/Footer";
+import SiteShell from "@/components/SiteShell";
 
 // Load the Inter font (light, regular and medium weights).
 const inter = Inter({
@@ -39,11 +41,18 @@ export default function RootLayout({
       <body className={`${inter.variable} flex min-h-screen flex-col`}>
         {/* CartProvider makes the cart available to every component */}
         <CartProvider>
-          <AnnouncementBar />
-          <Navbar />
-          <CartDrawer />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <SiteShell
+            header={
+              <>
+                <AnnouncementBar />
+                <Navbar />
+                <CartDrawer />
+              </>
+            }
+            footer={<Footer />}
+          >
+            {children}
+          </SiteShell>
         </CartProvider>
       </body>
     </html>
